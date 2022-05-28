@@ -11,7 +11,7 @@ public class Grafo {
     
     public Grafo(int max, List<Storage> storage, String[] routes){
         this.vertices =  storage;
-        this.nVertices = 0;
+        this.nVertices = storage.getLength();
         this.maxVertices = max;
         this.routes = routes;
         this.matriz = new int[max][max];
@@ -37,6 +37,7 @@ public class Grafo {
     public int getMaxVertices() {
         return maxVertices;
     }
+       
 
     public String[] getRoutes() {
         return routes;
@@ -65,20 +66,13 @@ public class Grafo {
     
 
     public void readRoutes(){
-        String[] names = new String[maxVertices];
+        String[] names = new String[nVertices];  /// revisar si es con max o con num
         for(int i = 0; i < (vertices.getLength()); i++){
             names[i] = vertices.getElement(i).getName();
         }
-        
-        for(int i = 0;i < routes.length ; i++ ){
-            System.out.println(routes[i].length());
-        }
+
         for (int i=1; i< routes.length; i++){
-        
             String[] temp = routes[i].split(",");
-            System.out.println(temp.length);
-            System.out.println(temp[0]);
-            System.out.println("hsfrfjskfndnsdfjsdiofjosjdfokjfds");
             int a = getIndex(names,temp[0]);
             int b = getIndex(names,temp[1]);
             System.out.println("Index 1: " + a + " Index 2: " + b);
@@ -92,14 +86,20 @@ public class Grafo {
     
     public int getIndex(String[] name, String word){
         for(int i = 0; i < name.length; i++){
-            System.out.println(name[i]);
-            System.out.println("askfna");
             if(name[i].equals(word)){
-                System.out.println("helppppppppppppp " + i);
                 return i;
             }
         }
         return -1;
+    }
+
+    public void printMatrix(){
+        for (int i = 0; i < nVertices; i++){
+            for (int j = 0; j < nVertices; j++){
+                System.out.print(matriz[i][j]);
+            }
+            System.out.println("");
+        }
     }
 }
     
