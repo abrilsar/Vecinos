@@ -1,6 +1,8 @@
 
 package proyecto;
     
+import javax.swing.JOptionPane;
+
     
 public class Grafo {
     private List<Storage> vertices;
@@ -63,27 +65,26 @@ public class Grafo {
         this.routes = routes;
     }
     
-    
-
-    public void readRoutes(){
+    public void addRout(String r){
         String[] names = new String[nVertices];  /// revisar si es con max o con num
         for(int i = 0; i < (vertices.getLength()); i++){
             names[i] = vertices.getElement(i).getName();
         }
-
-        for (int i=1; i< routes.length; i++){
-            String[] temp = routes[i].split(",");
-            int a = getIndex(names,temp[0]);
-            int b = getIndex(names,temp[1]);
-            System.out.println("Index 1: " + a + " Index 2: " + b);
-            if (a != -1 && b != -1){
-                matriz[a][b] = Integer.valueOf(temp[temp.length - 1]);
-            }
-            
+        String[] temp = r.split(",");
+        int a = getIndex(names,temp[0]);
+        int b = getIndex(names,temp[1]);
+        if (a != -1 && b != -1){
+            matriz[a][b] = Integer.valueOf(temp[temp.length - 1]);
         }
-            
     }
     
+    
+    public void readRoutes(){
+        for(int i=1; i< routes.length; i++){
+            addRout(routes[i]);           
+        }
+    }
+
     public int getIndex(String[] name, String word){
         for(int i = 0; i < name.length; i++){
             if(name[i].equals(word)){
@@ -101,5 +102,52 @@ public class Grafo {
             System.out.println("");
         }
     }
-}
     
+    //Recorido de Anchura
+    public void bfs(int start){ //Le paso la posicion del vertice
+        System.out.println(start < vertices.getLength() && start > -1);
+        if (start < vertices.getLength() && start > -1){
+            Queue<Integer> queue = new Queue();
+            boolean[] visited = createListVisited();
+            queue.enqueue(start);
+            visited[start] = true;
+            
+            int aux;
+            while(!queue.isEmpty()){
+                // retorna el elemnto del nodo que esta de primero, que es el indice del nodo
+                aux = (int) queue.despachar(); //idice del nodo 
+                System.out.println(vertices.getElement(aux).getName());
+                for(int i = 0; i < nVertices; i++){
+                    if (matriz[aux][i] != 0 && (!visited[i])){
+                        queue.enqueue(i);
+                        visited[i] = true;
+                    }
+            }
+        }
+        }else{
+           JOptionPane.showMessageDialog(null,"Error en el idex!"); 
+        }
+    }
+    
+    public boolean[] createListVisited(){
+        boolean[] visited = new boolean[nVertices];
+        for (int i = 0; i < visited.length; i++){
+            visited[i] = false;
+        }
+        return visited;
+    }
+    
+    public void dfs(int start, boolean[] visited){
+        if (start < vertices.getLength() && start > -1){
+        visited[start] = true;
+        System.out.println(vertices.getElement(start).getName());
+        for (int i = 0; i < matriz[start].length; i++) {
+            if (matriz[start][i] != 0 && (!visited[i])) {
+                dfs(i, visited);
+                    }
+                }
+        }else{
+            JOptionPane.showMessageDialog(null,"Error en el idex!"); 
+        }
+    }
+}

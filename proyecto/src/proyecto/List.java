@@ -131,5 +131,16 @@ public class List <T> {
             }
         }
     }
+    
+    public int getIndex(T data){
+        if(!isEmpty()){
+            for(int i = 0;i < length; i++){
+                if(getElement(i).equals(data)){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 }   
 
