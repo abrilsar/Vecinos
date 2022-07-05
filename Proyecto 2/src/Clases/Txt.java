@@ -11,8 +11,10 @@ import javax.swing.JOptionPane;
 
 
 public class Txt {
-    
-    
+    String path;
+    public Txt(String nombre){
+        path = nombre;
+    }
     public void start(){
         String str = "Resumenes.txt";
         String contenido = this.leer_archivo(str);
@@ -33,7 +35,12 @@ public class Txt {
         if(ok){
             Resumen nodo = new Resumen(nombre, resumen, autores, palabras_claves);
             Nodo<Resumen> nodo2 = new Nodo(nodo);
-            exists = Global.getTable().insertar(nodo2, nombre, contenido);}
+            exists = Global.getTable().insertar(nodo2, nombre, "titulo");
+            exists = Global.getTable().insertar(nodo2, nombre, "autor");
+            exists = Global.getTable().insertar(nodo2, nombre, "palabras");
+            if(!exists){
+                Global.getLista_todo().insertOrdered(nombre);
+            }}
         else {
             JOptionPane.showMessageDialog(null, "Ese documento no es valido");
             exists = true;
@@ -89,7 +96,7 @@ public class Txt {
     }
     
     public static void append(String contenido) {
-        
+        //Hacer appens a resumenes de "archivo::\n" + "txt.printGuardar()" por cada item en la lista
     }
     
 }

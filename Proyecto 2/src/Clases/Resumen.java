@@ -58,4 +58,22 @@ public class Resumen {
         this.palabras_clave = palabras_clave;
     }
     
+    public String printDocument() {
+        String str = "";
+        str+= titulo + ".\n";
+        str+= "Autores: ";
+        for (int i = 0; i<autores.length;i++){
+            str += autores[i];
+        }
+        str += "\n";
+        for(int i = 0; i<palabras_clave.length;i++){
+            str += palabras_clave[i]+": "+Integer.toString(contarPalabra(palabras_clave[i]))+"\n";
+        }
+        return str;
+    }
+    
+    public int contarPalabra(String palabra){
+        return resumen.split(palabra).length-1;
+    }
+    
 }
