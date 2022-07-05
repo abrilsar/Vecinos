@@ -6,19 +6,19 @@ import javax.swing.JOptionPane;
 
 
 public class HashTable {
-    Nodo_Hash[] table;
+    Nodo[] table;
     int tamaño;
     
     public HashTable(){
         this.tamaño = 0;
-        this.table = new Nodo_Hash[tamaño];
+        this.table = new Nodo[tamaño];
     }
 
-    public Nodo_Hash[] gettable() {
+    public Nodo[] gettable() {
         return table;
     }
 
-    public void settable(Nodo_Hash[] table) {
+    public void settable(Nodo[] table) {
         this.table = table;
     }
 
@@ -30,10 +30,11 @@ public class HashTable {
         this.tamaño = tamaño;
     }
     
-    public void insertar(Nodo_Hash nodo, String titulo) {
+    public boolean insertar(Nodo<Resumen> nodo, String titulo, String contenido) {
         int position = hash(titulo);
+        boolean exists = false;
         if(position > tamaño) {
-            Nodo_Hash[] nuevo = new Nodo_Hash[position+1];
+            Nodo[] nuevo = new Nodo[position+1];
             for (int i = 0; i < tamaño; i++) {
                 nuevo[i] = table[i];
             }
@@ -44,40 +45,45 @@ public class HashTable {
         if (table[position] == null) {
             table[position] = nodo;
         } else {
-            Nodo_Hash temp = table[position];
-            if (temp.getDocumento().getTitulo().equals(nodo.getDocumento().getTitulo())) {
+            Nodo<Resumen> temp = table[position];
+            if (temp.getData().getTitulo().equals(nodo.getData().getTitulo())) {
                 JOptionPane.showMessageDialog(null, "Ese documento ya existe");
+                exists = true;
             } else {
                 while (temp.getNext() != null) {
                     temp = temp.getNext();
-                    if (temp.getDocumento().getTitulo().equals(nodo.getDocumento().getTitulo())){
+                    if (temp.getData().getTitulo().equals(nodo.getData().getTitulo())){
                         JOptionPane.showMessageDialog(null, "Ese documento ya existe");
+                        exists = true;
                         break;
 
                 }
+                if (!exists) {
                 temp.setNext(nodo);
+                }
             }
         }
         table[position] = nodo;
         }
         }
+        return exists;
     }
     
     
     public int hash(String nombre) {
         int valor = 0;
-        int posicion = 1;
+        int position = 1;
         for (int i = 0; i < nombre.length() ; i++) {
                 if (nombre.codePointAt (i) == 32) {
                     valor += 0;
                 } else if (nombre.codePointAt (i) >= 48 && nombre.codePointAt (i) <= 57) {
-                        valor += ((nombre.codePointAt (i) - 47) * posicion);
+                        valor += ((nombre.codePointAt (i) - 47) * position);
                 } else if (nombre.codePointAt (i) >= 65 && nombre.codePointAt (i) <= 90) {
-                        valor += ((nombre.codePointAt (i) - 54) * posicion);
+                        valor += ((nombre.codePointAt (i) - 54) * position);
                 } else if (nombre.codePointAt (i) >= 97 && nombre.codePointAt (i) <= 122) {
-                        valor += ((nombre.codePointAt (i) - 60) * posicion);
+                        valor += ((nombre.codePointAt (i) - 60) * position);
                 }
-                posicion++;
+                position++;
             }
             return (valor % tamaño);
     }
